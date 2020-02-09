@@ -1,3 +1,4 @@
+package com.pmt.mattress;
 
 public class Main {
 
