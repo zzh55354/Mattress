@@ -3,9 +3,10 @@ package com.pmt.mattress;
 import java.util.ArrayList;
 
 public class Mattress {
+	
 	private String name;
-	private String size = "TWIN"; //emun
-	private double height = 0;
+	private MattressSize size = MattressSize.QUEEN; 
+	private double height = 0.0;
 	private ArrayList <Layer> Layers = new ArrayList<Layer>();
 	private OuterCover outerCover;
 	
@@ -18,17 +19,21 @@ public class Mattress {
 		return name;
 	}
 	
-	public void setSize(String size) {
+	public void setSize(MattressSize size ) {
 		this.size = size;
 	}
 	
-	public String getSize() {
+	public MattressSize getSize() {
 		return size;
 	}
 		
 	public void addLayer(Layer l ) {
 		this.Layers.add(l);
 		height += l.getThickness();
+	}
+	
+	public void removeLayer(Layer l) {
+		
 	}
 	
 	public double getHeight() {

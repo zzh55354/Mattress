@@ -7,16 +7,15 @@ import java.sql.SQLException;
 
 public class OuterCover {
 	private String name;
-	private double surface;
+	private double coversurface;
 	private double unitPrice;
 	private double totalPrice;
-	OuterCover(String name, double height, String size) {
+	OuterCover(String name, double height, MattressSize size) {
 		this.name = name;
 		getUnitPrice(name);
-		this.surface = getSurface(size, height);
-		totalPrice = unitPrice*surface;
+		setSurface(size.getCircumference(), size.getSurface(), height);
+		totalPrice = unitPrice*coversurface;
 	}
-	
 	
 	private void getUnitPrice(String name) {
 		try {
@@ -31,28 +30,15 @@ public class OuterCover {
 		}
 	}
 	
-	private double getSurface(String size, double height) {
-		double length = 0;
-		double width = 0;
-		try {
-			Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mattress_components", "root", "Zzh123456!");
-			PreparedStatement myStmt = myConn.prepareStatement("select length, width from size_chat where size = ?");
-			myStmt.setString(1, size);
-			ResultSet myRs = myStmt.executeQuery();
-			myRs.next();
-			length = myRs.getDouble("length");
-			width = myRs.getDouble("width");
-		}catch(SQLException exc) {
-			exc.printStackTrace();
-		}
-		return ((height*2*(length + width))+2*length*width);
+	public void setSurface(int circumference, int surface, double height) {
+		coversurface =  circumference * height + 2 * surface;
 	}
-
+	
 	public double getPrice() {
 		return totalPrice;
 	}
 	
-	public String name() {
+	public String getName() {
 		return name;
 	}
 }

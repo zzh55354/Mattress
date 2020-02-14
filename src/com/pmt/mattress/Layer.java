@@ -3,18 +3,16 @@ import java.sql.*;
 
 public class Layer {
 	private String name;
-	private String size;
 	private double unitPrice;
 	private double thickness;
-	private double surface;
 	private double totalPrice;
+	private int surface;
 	
-	public Layer(double thickness, String name, String size) {
+	public Layer(double thickness, String name, MattressSize size) {
 		this.name = name;
 		this.thickness = thickness;
-		this.size = size;
+		surface = size.getSurface();
 		getUnitPrice();
-		getSurface();
 		totalPrice = thickness*surface*unitPrice;
 	}
 	
@@ -26,26 +24,10 @@ public class Layer {
 		return unitPrice;
 	}
 	
-	public String getSize() {
-		return size;
-	}
-	
 	public double getThickness() {
 		return thickness;
 	}
 	
-	private void getSurface() {
-		try {
-			Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/mattress_components", "root", "Zzh123456!");
-			PreparedStatement myStmt = myConn.prepareStatement("select area_in_inch from surface where size = ?");
-			myStmt.setString(1, getSize());
-			ResultSet myRs = myStmt.executeQuery();
-			myRs.next();
-			surface = myRs.getDouble("area_in_inch");
-		}catch(SQLException exc) {
-			exc.printStackTrace();
-		}
-	}
 	
 	public void printLayer() {
 		System.out.println(thickness + "\" " + name);
