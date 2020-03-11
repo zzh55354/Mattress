@@ -4,17 +4,18 @@ public class Main {
 
 	public static void main(String[] args) {
 		Mattress m = new Mattress("SearBed");
-		m.setSize(MattressSize.TWIN);
-		Layer topper = new Layer(2.5, "gel infused memory foam", m.getSize());
-		Layer base = new Layer(7.5, "conventional white foam", m.getSize());
-		OuterCover searcover = new OuterCover("30% Tencent", m.getHeight(), m.getSize());
+		Layer topper = new Layer(2.5, "gel infused memory foam");
+		Layer base = new Layer(7.5, "conventional white foam");
+		OuterCover outCover = new OuterCover("SEAR BED OUTER COVER");
+		
 		m.addLayer(topper);
 		m.addLayer(base);
-		m.addOuterCover(searcover);
+		m.addOuterCover(outCover);
+		m.putMattressPrice();
+		m.showPrice();
+		m.setID("NSSBM001");
+		m.savePrice();
 		
-		System.out.println(m.getHeight());
-		System.out.println(searcover.getPrice());
-		System.out.println(m.calPrice());
 	}
 
 }

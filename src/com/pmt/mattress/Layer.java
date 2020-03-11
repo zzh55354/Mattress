@@ -1,33 +1,57 @@
 package com.pmt.mattress;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 public class Layer {
 	private String name;
-	private double unitPrice;
 	private double thickness;
-	private double totalPrice;
-	private int surface;
+	private double bfPrice;
+	private HashMap <MattressSize, Double> layerPrices = new HashMap<MattressSize, Double>();
 	
-	public Layer(double thickness, String name, MattressSize size) {
+	public Layer(double thickness, String name) {
 		this.thickness = thickness;
-		surface = size.getSurface();
+		this.name = name;
 		DBAccess dba = new DBAccess();
-		unitPrice = dba.getFoamPrice(name);
-		totalPrice = thickness*surface*unitPrice;
+		bfPrice = dba.getFoamPrice(name);
+		putPrice();
 	}
 	
-	public Double getPrice() {
-		return unitPrice;
+	public String getName() {
+		return name;
+	}
+	
+	public Double getBfPrice() {
+		return bfPrice;
 	}
 	
 	public double getThickness() {
 		return thickness;
 	}
 		
-	public void printLayer() {
-		System.out.println(thickness + "\" " + name);
+	public String toString() {
+		return thickness + "\" " + name;
 	}
 	
-	public double getTotalPrice() {
-		return totalPrice;
+	public void putPrice() {
+		layerPrices.put(MattressSize.TWIN, (MattressSize.TWIN.getSurface()*thickness/(12*12)*bfPrice));
+		layerPrices.put(MattressSize.TWINXL, (MattressSize.TWINXL.getSurface()*thickness/(12*12)*bfPrice));
+		layerPrices.put(MattressSize.FULL, (MattressSize.FULL.getSurface()*thickness/(12*12)*bfPrice));
+		layerPrices.put(MattressSize.QUEEN, (MattressSize.QUEEN.getSurface()*thickness/(12*12)*bfPrice));
+		layerPrices.put(MattressSize.KING, (MattressSize.KING.getSurface()*thickness/(12*12)*bfPrice));
+		layerPrices.put(MattressSize.CKING, (MattressSize.CKING.getSurface()*thickness/(12*12)*bfPrice));
 	}
+	
+	public void showPrice() {
+		for(Entry<MattressSize, Double> entry : layerPrices.entrySet()) {
+			System.out.println(entry.getKey() + ": " + entry.getValue());
+		}
+	}
+	
+	public HashMap <MattressSize, Double> getPrice() {
+		return layerPrices;
+	}
+	
+	
+	
 }
